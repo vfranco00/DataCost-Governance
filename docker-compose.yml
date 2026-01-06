@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    # 1. A Imagem: É o sistema operacional + Postgres que vamos baixar
+    image: postgres:15-alpine
+    container_name: dcg_postgres
+    restart: always
+    
+    # 2. As Senhas: O Postgres exige isso para ligar
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: dcg_database
+      
+    # 3. As Portas: Conecta a porta 5432 do seu Mac na 5432 do Docker
+    ports:
+      - "5432:5432"
+      
+    # 4. Os Volumes (A Mágica):
+    volumes:
+      # Isso guarda os dados para não perder se desligar
+      - pg_data:/var/lib/postgresql/data
+      # AQUI É O PULO DO GATO:
+      # Dizemos: "Pegue tudo que está na minha pasta ./database"
+      # E coloque na estante "/docker-entrypoint-initdb.d" lá dentro
+      - ./database:/docker-entrypoint-initdb.d
+      
+    networks:
+      - dcg_network
+
+networks:
+  dcg_network:
+
+volumes:
+  pg_data:
