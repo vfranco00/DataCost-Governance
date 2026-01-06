@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import { router } from './views/routes';
 
 const app = express();
 
@@ -7,20 +8,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Rota de Teste (Health Check)
-app.get('/', (req: Request, res: Response) => {
-    res.json({
-        project: 'DataCost Governance (DCG)',
-        status: 'Online',
-        message: 'Ambiente TypeScript + Express configurado com sucesso!',
-        timestamp: new Date()
-    });
-});
+app.use('/api', router);
 
 // Inicializa o servidor
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-    console.log(`📝 Modo de teste: Ativo`);
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
