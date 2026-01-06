@@ -10,7 +10,7 @@ export class DashboardController {
             const repository = new PostgresAssetRepository();
             const service = new DashboardService(repository);
 
-            const data = await service.getFinancialSummary();
+            const data = await service.getFullDashboard();
             
             return res.json(data);
         } catch (error) {
